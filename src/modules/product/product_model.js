@@ -34,7 +34,7 @@ module.exports = {
   getDataCount: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT COUNT(*) AS total FROM product`,
+        'SELECT COUNT(*) AS total FROM product',
         (error, result) => {
           !error ? resolve(result[0].total) : reject(new Error(error))
         }

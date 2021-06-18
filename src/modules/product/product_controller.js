@@ -90,7 +90,7 @@ module.exports = {
           null
         )
       }
-    } catch {
+    } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
@@ -153,7 +153,8 @@ module.exports = {
         return helper.response(
           res,
           200,
-          `Success Delete Product Data By id: ${id}`
+          `Success Delete Product Data By id: ${id}`,
+          result
         )
       } else {
         return helper.response(
