@@ -29,7 +29,7 @@ module.exports = {
   updateUserData: async (req, res) => {
     try {
       const { id } = req.params
-      const {
+      let {
         userEmail,
         userPhone,
         userAddress,
@@ -39,6 +39,9 @@ module.exports = {
         userBirthday,
         userGender
       } = req.body
+      if (userBirthday !== undefined) {
+        userBirthday = userBirthday.split('/').reverse().join('/')
+      }
       const checkUserData = await userModel.geDataByCondition({ user_id: id })
       const setData = {
         user_email:
