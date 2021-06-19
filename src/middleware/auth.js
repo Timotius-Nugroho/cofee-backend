@@ -1,4 +1,4 @@
-const helper = require('../helpers')
+const helper = require('../helpers/wrapper')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
@@ -15,7 +15,8 @@ module.exports = {
           return helper.response(res, 403, error.message)
         } else {
           req.decodeToken = result
-          if (req.decodeToken.user_verification !== 'succes') {
+          if (req.decodeToken.user_verification !== 1) {
+            console.log(req.decodeToken.user_verification)
             return helper.response(res, 403, 'Please verify your email first !')
           }
           next()

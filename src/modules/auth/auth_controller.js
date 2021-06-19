@@ -67,7 +67,9 @@ module.exports = {
         if (checkPassword) {
           const payload = {
             user_id: checkEmailUser[0].user_id,
-            user_email: checkEmailUser[0].user_email
+            user_email: checkEmailUser[0].user_email,
+            user_verification: checkEmailUser[0].user_verification,
+            user_role: checkEmailUser[0].user_role
           }
           delete payload.user_password
           const token = jwt.sign({ ...payload }, process.env.PRIVATE_KEY, {
