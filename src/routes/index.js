@@ -6,7 +6,6 @@ const productRouter = require('../modules/product/product_routes')
 
 Route.use('/auth', authRouter)
 Route.use('/invoice', invoiceRouter)
-
 Route.use('/product', productRouter)
 
 module.exports = Route
