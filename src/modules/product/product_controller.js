@@ -115,7 +115,8 @@ module.exports = {
         product_desc: productDesc,
         product_image: req.file
           ? req.file.filename
-          : checkProductData[0].product_image
+          : checkProductData[0].product_image,
+        product_updated_at: new Date(Date.now())
       }
       if (checkProductData.length > 0) {
         if (req.file) {
@@ -149,6 +150,7 @@ module.exports = {
         product_id: id
       })
       if (checkProductData.length > 0) {
+        deleteImage(`src/uploads/${checkProductData[0].product_image}`)
         const result = await productModel.deleteData(id)
         return helper.response(
           res,
