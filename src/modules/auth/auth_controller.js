@@ -41,7 +41,6 @@ module.exports = {
         return helper.response(res, 400, 'Email has been registered')
       }
     } catch (error) {
-      // console.log(error)
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
@@ -49,7 +48,6 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { userEmail, userPassword } = req.body
-      // console.log('BODY', req.body)
       const checkEmailUser = await authModel.getDataCondition({
         user_email: userEmail
       })
