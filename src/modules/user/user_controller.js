@@ -39,6 +39,7 @@ module.exports = {
         userBirthday,
         userGender
       } = req.body
+      const checkUserData = await userModel.geDataByCondition({ user_id: id })
       const setData = {
         user_email: userEmail,
         user_phone: userPhone,
@@ -48,10 +49,14 @@ module.exports = {
         user_last_name: userLastName,
         user_birthday: userBirthday,
         user_gender: userGender,
+        user_image: req.file ? req.file.filename : checkUserData[0].user_image,
         user_updated_at: new Date(Date.now())
       }
-      const checkUserData = await userModel.geDataByCondition({ user_id: id })
+
       if (checkUserData.length > 0) {
+        if (req.file) {
+          deleteImage(`src/uploads/${checkUserData[0].user_image}`)
+        }
         const result = await userModel.updateData(setData, { user_id: id })
         return helper.response(
           res,
@@ -64,32 +69,6 @@ module.exports = {
           res,
           404,
           `User Data By Id: ${id} Not Found`,
-          null
-        )
-      }
-    } catch (error) {
-      return helper.response(res, 400, 'Bad Request', error)
-    }
-  },
-  updateUserImage: async (req, res) => {
-    try {
-      const id = req.params.id
-      const setImage = { user_image: req.file.filename }
-      const checkUserData = await userModel.geDataByCondition({ user_id: id })
-      if (checkUserData.length > 0) {
-        deleteImage(`src/uploads/${checkUserData[0].user_image}`)
-        const result = await userModel.updateData(setImage, { user_id: id })
-        return helper.response(
-          res,
-          200,
-          `Success Update User Image By Id: ${id}`,
-          result
-        )
-      } else {
-        return helper.response(
-          res,
-          404,
-          `User Data By Id ${id} Not Found`,
           null
         )
       }
