@@ -41,14 +41,32 @@ module.exports = {
       } = req.body
       const checkUserData = await userModel.geDataByCondition({ user_id: id })
       const setData = {
-        user_email: userEmail,
-        user_phone: userPhone,
-        user_address: userAddress,
-        user_display_name: userDisplayName,
-        user_first_name: userFirstName,
-        user_last_name: userLastName,
-        user_birthday: userBirthday,
-        user_gender: userGender,
+        user_email:
+          userEmail !== undefined ? userEmail : checkUserData[0].user_email,
+        user_phone:
+          userPhone !== undefined ? userPhone : checkUserData[0].user_phone,
+        user_address:
+          userAddress !== undefined
+            ? userAddress
+            : checkUserData[0].user_address,
+        user_display_name:
+          userDisplayName !== undefined
+            ? userDisplayName
+            : checkUserData[0].user_display_name,
+        user_first_name:
+          userFirstName !== undefined
+            ? userFirstName
+            : checkUserData[0].user_first_name,
+        user_last_name:
+          userLastName !== undefined
+            ? userLastName
+            : checkUserData[0].user_last_name,
+        user_birthday:
+          userBirthday !== undefined
+            ? userBirthday
+            : checkUserData[0].user_birthday,
+        user_gender:
+          userGender !== undefined ? userGender : checkUserData[0].user_gender,
         user_image: req.file ? req.file.filename : checkUserData[0].user_image,
         user_updated_at: new Date(Date.now())
       }
@@ -76,13 +94,19 @@ module.exports = {
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
-  deleteUserData: async (req, res) => {
+  deleteUserImage: async (req, res) => {
     try {
       const id = req.params.id
       const checkUserData = await userModel.geDataByCondition({ user_id: id })
+      const setDeleteImage = {
+        user_image: '',
+        user_updated_at: new Date(Date.now())
+      }
       if (checkUserData.length > 0) {
         deleteImage(`src/uploads/${checkUserData[0].user_image}`)
-        const result = await userModel.deleteData(id)
+        const result = await userModel.updateData(setDeleteImage, {
+          user_id: id
+        })
         return helper.response(
           res,
           200,
