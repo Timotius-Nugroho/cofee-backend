@@ -1,13 +1,13 @@
-# coffe-back end
-
 <h1 align="center">ExpressJS - Coffee Express RESTfull API</h1>
 
-#background_projek. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+When there is a pandemic, this application is here to make it easier for you to enjoy coffee and snacks like in a cafe.
 
 ## Built With
 
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-orange.svg?style=rounded-square)](https://expressjs.com/en/starter/installing.html)
 [![Node.js](https://img.shields.io/badge/Node.js-v.12.13-green.svg?style=rounded-square)](https://nodejs.org/)
+
+[More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Requirements
 
@@ -33,6 +33,10 @@ Open .env file on your favorite code editor, and copy paste this code below :
 
 ```
 DB_HOST=localhost // Database host
+DB_USER=root // Database username
+DB_PASS= // Database password
+DB_NAME=coffee_express_app // Database name
+PORT=3005 // port
 ```
 
 ## Team
