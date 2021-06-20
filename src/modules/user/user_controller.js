@@ -1,4 +1,5 @@
 const helper = require('../../helpers/wrapper')
+const bcrypt = require('bcrypt')
 const userModel = require('./user_model')
 const { deleteImage } = require('../../helpers/delete_image')
 
@@ -93,6 +94,36 @@ module.exports = {
           null
         )
       }
+    } catch (error) {
+      return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
+  updateUserPassword: async (req, res) => {
+    try {
+      const { id } = req.params
+      const { userPassword } = req.body
+      const salt = bcrypt.genSaltSync(10)
+      const encryptPassword = bcrypt.hashSync(userPassword, salt)
+      const checkUserData = await userModel.geDataByCondition({ user_id: id })
+      if (checkUserData.length === 0) {
+        return helper.response(
+          res,
+          404,
+          `User Data By Id: ${id} Not Found`,
+          null
+        )
+      }
+
+      const result = await userModel.updateData(
+        { user_password: encryptPassword },
+        { user_id: id }
+      )
+      return helper.response(
+        res,
+        200,
+        `Success Update Password User By Id: ${id}`,
+        result
+      )
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
