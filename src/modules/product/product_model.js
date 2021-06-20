@@ -20,10 +20,10 @@ module.exports = {
       )
     })
   },
-  getAllData: (search, sort, limit, offset) => {
+  getAllData: (search, sort, category, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM product WHERE product_name LIKE '%${search}%' ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT * FROM product WHERE product_name LIKE '%${search}%' AND product_category = "${category}" ORDER BY ${sort} LIMIT ${limit} OFFSET ${offset}`,
         (error, result) => {
           console.log(error)
           !error ? resolve(result) : reject(new Error(error))

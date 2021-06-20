@@ -30,7 +30,7 @@ module.exports = {
   },
   getAllProduct: async (req, res) => {
     try {
-      let { search, sort, limit, page } = req.query
+      let { search, sort, category, limit, page } = req.query
       if (search === undefined) {
         search = ''
       }
@@ -55,7 +55,13 @@ module.exports = {
         totalData
       }
 
-      const result = await productModel.getAllData(search, sort, limit, offset)
+      const result = await productModel.getAllData(
+        search,
+        sort,
+        category,
+        limit,
+        offset
+      )
       if (result.length > 0) {
         return helper.response(
           res,
