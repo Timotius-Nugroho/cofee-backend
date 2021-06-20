@@ -12,7 +12,7 @@ const {
 
 Route.get('/:id', authentication, getUserDataByid)
 Route.patch('/:id', authentication, uploads, updateUserData)
-Route.patch('/delete-image/:id', authentication, deleteUserImage)
+Route.get('/delete-image/:id', authentication, deleteUserImage)
 Route.patch('/change-password/:id', authentication, updateUserPassword)
 
 module.exports = Route
