@@ -37,6 +37,9 @@ DB_USER=root // Database username
 DB_PASS= // Database password
 DB_NAME=coffee_express_app // Database name
 PORT=3005 // port
+SMTP_EMAIL= // your email
+SMTP_PASSWORD= // your email password
+PRIVATE_KEY= // your private key for decode user token
 ```
 
 ## Team

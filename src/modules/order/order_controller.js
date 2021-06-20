@@ -25,17 +25,8 @@ module.exports = {
   deleteOrderDataById: async (req, res) => {
     try {
       const { id } = req.params
-      const checkUserData = await userModel.geDataByCondition({ user_id: id })
-      if (checkUserData.length > 0) {
-        await orderModel.deleteData(id)
-        return helper.response(
-          res,
-          200,
-          `Success Delete Order Data By Id: ${id}`
-        )
-      } else {
-        return helper.response(res, 404, `order_id: ${id} Not Found`, null)
-      }
+      await orderModel.deleteData(id)
+      return helper.response(res, 200, `Success Delete Order Data By Id: ${id}`)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
