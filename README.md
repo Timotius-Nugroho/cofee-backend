@@ -33,7 +33,7 @@ Open .env file on your favorite code editor, and copy paste this code below :
 DB_HOST=localhost // Database host
 ```
 
-## Team - untuk project team
+## Team
 
 > All Members of Default Team
 
