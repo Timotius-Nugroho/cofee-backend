@@ -28,7 +28,7 @@ module.exports = {
   },
 
   isAdmin: (req, res, next) => {
-    console.log('Middle ware isAdmin running !')
+    console.log('Middleware isAdmin running !')
     console.log(req.decodeToken)
     if (req.decodeToken.user_role === 'admin') {
       next()
