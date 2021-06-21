@@ -30,7 +30,7 @@ module.exports = {
   },
   getAllProduct: async (req, res) => {
     try {
-      let { search, sort, category, limit, page } = req.query
+      let { search, sort, limit, page, category } = req.query
       if (search === undefined) {
         search = ''
       }
@@ -42,6 +42,9 @@ module.exports = {
       }
       if (page === undefined) {
         page = '1'
+      }
+      if (category === undefined) {
+        category = 'fav'
       }
       const totalData = await productModel.getDataCount()
       page = parseInt(page)
@@ -114,11 +117,26 @@ module.exports = {
         product_id: id
       })
       const setData = {
-        product_name: productName,
-        product_price: productPrice,
-        product_category: productCategory,
-        product_size: productSize,
-        product_desc: productDesc,
+        product_name:
+          productName !== undefined
+            ? productName
+            : checkProductData[0].product_name,
+        product_price:
+          productPrice !== undefined
+            ? productPrice
+            : checkProductData[0].product_price,
+        product_category:
+          productCategory !== undefined
+            ? productCategory
+            : checkProductData[0].product_category,
+        product_size:
+          productSize !== undefined
+            ? productSize
+            : checkProductData[0].product_size,
+        product_desc:
+          productDesc !== undefined
+            ? productDesc
+            : checkProductData[0].product_desc,
         product_image: req.file
           ? req.file.filename
           : checkProductData[0].product_image,
