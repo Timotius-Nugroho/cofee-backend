@@ -12,6 +12,28 @@ module.exports = {
       )
     })
   },
+  getInvoiceById: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT invoice_number, order_status FROM invoice WHERE invoice_id = ?',
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+  getProductById: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT product_image FROM product WHERE product_id = ?',
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
   deleteData: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
