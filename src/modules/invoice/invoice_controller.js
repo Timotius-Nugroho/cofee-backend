@@ -43,7 +43,21 @@ module.exports = {
 
   getInvoicePending: async (req, res) => {
     try {
-      const invoices = await invoiceModel.getAllInvoice()
+      let { limit, page } = req.query
+      page = parseInt(page) || 1
+      limit = parseInt(limit) || 10
+
+      const totalData = await invoiceModel.getDataCount()
+      const totalPage = Math.ceil(totalData / limit)
+      const offset = page * limit - limit
+      const pageInfo = {
+        page,
+        totalPage,
+        limit,
+        totalData
+      }
+
+      const invoices = await invoiceModel.getAllInvoice(limit, offset)
       let userName = []
       for (const invoice of invoices) {
         userName = await invoiceModel.getUserName(invoice.user_id)
@@ -60,7 +74,8 @@ module.exports = {
         res,
         200,
         'Succes Get Invoice with Pending Status',
-        invoices
+        invoices,
+        pageInfo
       )
     } catch (error) {
       console.log(error)

@@ -1,12 +1,23 @@
 const connection = require('../../config/mysql')
 
 module.exports = {
-  getAllInvoice: () => {
+  getAllInvoice: (limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM invoice WHERE order_status = "pending"',
+        `SELECT * FROM invoice WHERE order_status = "pending" LIMIT ${limit} OFFSET ${offset}`,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
+        }
+      )
+    })
+  },
+
+  getDataCount: () => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        'SELECT COUNT(*) AS total FROM invoice',
+        (error, result) => {
+          !error ? resolve(result[0].total) : reject(new Error(error))
         }
       )
     })
