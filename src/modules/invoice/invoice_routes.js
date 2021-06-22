@@ -13,7 +13,7 @@ Route.post(
   authMiddleware.authentication,
   invoiceController.createInvoice
 )
-Route.patch(
+Route.get(
   '/update-status/:id',
   authMiddleware.authentication,
   authMiddleware.isAdmin,
