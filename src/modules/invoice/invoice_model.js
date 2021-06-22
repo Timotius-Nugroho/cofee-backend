@@ -15,7 +15,7 @@ module.exports = {
   getDataCount: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT COUNT(*) AS total FROM invoice',
+        'SELECT COUNT(*) AS total FROM invoice WHERE order_status = "pending"',
         (error, result) => {
           !error ? resolve(result[0].total) : reject(new Error(error))
         }
