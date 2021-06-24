@@ -26,7 +26,7 @@ module.exports = {
   getInvoiceByMonth: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT MONTH(invoice_created_at) AS month, SUM(invoice_subtotal) AS Total FROM invoice GROUP BY MONTH(invoice_created_at)',
+        'SELECT MONTHNAME(invoice_created_at) AS month, SUM(invoice_subtotal) AS Total FROM invoice GROUP BY MONTH(invoice_created_at)',
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
         }
