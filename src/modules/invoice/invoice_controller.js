@@ -1,5 +1,6 @@
 const helper = require('../../helpers/wrapper')
 const invoiceModel = require('./invoice_model')
+const midtransClient = require('midtrans-client')
 
 module.exports = {
   createInvoice: async (req, res) => {
@@ -34,7 +35,13 @@ module.exports = {
         })
       }
 
-      return helper.response(res, 200, 'Succes Create Invoice', result)
+      // midtrans
+      const newResult = await invoiceModel.createMidtransTrans({
+        invoiceId: result.insertId,
+        subTotal: invoiceSubtotal
+      })
+
+      return helper.response(res, 200, 'Succes Create Invoice', newResult)
     } catch (error) {
       console.log(error)
       return helper.response(res, 400, 'Bad Request', error)
@@ -99,6 +106,83 @@ module.exports = {
       return helper.response(res, 200, 'Succes Update invoice Status', result)
     } catch (error) {
       console.log(error)
+      return helper.response(res, 400, 'Bad Request', error)
+    }
+  },
+
+  postMidtransNotif: async (req, res) => {
+    try {
+      // console.log(req.body)
+
+      const snap = new midtransClient.Snap({
+        isProduction: false,
+        serverKey: 'SB-Mid-server-vjEJqGa3Jq0x9DtGLX-WcsTA',
+        clientKey: 'SB-Mid-client-fRU8uSNEVuGcFfR8'
+      })
+      snap.transaction
+        .notification(req.body)
+        .then((statusResponse) => {
+          const orderId = statusResponse.order_id
+          const transactionStatus = statusResponse.transaction_status
+          const fraudStatus = statusResponse.fraud_status
+          // console.log(grossAmount)
+
+          const updateStatus = async () => {
+            await invoiceModel.updateDataInvoice(
+              {
+                midtrans_status: transactionStatus
+              },
+              orderId
+            )
+            return helper.response(
+              res,
+              200,
+              `Invoice Id ${transactionStatus} !`
+            )
+          }
+
+          console.log(
+            `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`
+          )
+
+          // Sample transactionStatus handling logic
+
+          if (transactionStatus === 'capture') {
+            updateStatus()
+            if (fraudStatus === 'challenge') {
+              // TODO set transaction status on your databaase to 'challenge'
+              updateStatus()
+            } else if (fraudStatus === 'accept') {
+              updateStatus()
+            }
+          } else if (transactionStatus === 'settlement') {
+            // TODO set transaction status on your databaase to 'success'
+            updateStatus()
+          } else if (transactionStatus === 'deny') {
+            // TODO you can ignore 'deny', because most of the time it allows payment retries
+            // and later can become success
+            updateStatus()
+          } else if (
+            transactionStatus === 'cancel' ||
+            transactionStatus === 'expire'
+          ) {
+            // TODO set transaction status on your databaase to 'failure'
+            updateStatus()
+          } else if (transactionStatus === 'pending') {
+            // TODO set transaction status on your databaase to 'pending' / waiting payment
+            updateStatus()
+          }
+        })
+        .catch((err) => {
+          console.log('Midtrans error', err)
+          return helper.response(
+            res,
+            parseInt(err.ApiResponse.status_code),
+            err.ApiResponse.status_message,
+            null
+          )
+        })
+    } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
     }
   }

@@ -1,4 +1,5 @@
 const connection = require('../../config/mysql')
+const midtransClient = require('midtrans-client')
 
 module.exports = {
   getAllInvoice: (limit, offset) => {
@@ -96,6 +97,34 @@ module.exports = {
           }
         }
       )
+    })
+  },
+
+  createMidtransTrans: ({ invoiceId, subTotal }) => {
+    return new Promise((resolve, reject) => {
+      const snap = new midtransClient.Snap({
+        isProduction: false,
+        serverKey: 'SB-Mid-server-vjEJqGa3Jq0x9DtGLX-WcsTA',
+        clientKey: 'SB-Mid-client-fRU8uSNEVuGcFfR8'
+      })
+      const parameter = {
+        transaction_details: {
+          order_id: invoiceId,
+          gross_amount: subTotal
+        },
+        credit_card: {
+          secure: true
+        }
+      }
+      snap
+        .createTransaction(parameter)
+        .then((transaction) => {
+          resolve(transaction.redirect_url)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
     })
   }
 }

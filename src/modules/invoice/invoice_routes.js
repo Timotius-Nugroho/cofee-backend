@@ -19,5 +19,6 @@ Route.get(
   authMiddleware.isAdmin,
   invoiceController.UpdateInvoiceStatus
 )
+Route.post('/midtrans-notification', invoiceController.postMidtransNotif)
 
 module.exports = Route
