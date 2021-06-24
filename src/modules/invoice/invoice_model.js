@@ -50,7 +50,7 @@ module.exports = {
   getOrdersByInvoiceId: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT p.product_name, o.size, o.qty, o.total_price, o.order_created_at FROM orders o JOIN product p ON o.product_id = p.product_id WHERE o.invoice_id = ?',
+        'SELECT p.product_name, p.product_image, o.size, o.qty, o.total_price, o.order_created_at FROM orders o JOIN product p ON o.product_id = p.product_id WHERE o.invoice_id = ?',
         id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error))
