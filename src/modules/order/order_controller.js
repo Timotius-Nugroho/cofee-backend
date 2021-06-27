@@ -17,8 +17,12 @@ module.exports = {
           order.product_image = imageProduct[0]
             ? imageProduct[0].product_image
             : ''
-          order.invoice_number = invoiceInfo[0].invoice_number
-          order.order_status = invoiceInfo[0].order_status
+          order.invoice_number = invoiceInfo[0]
+            ? invoiceInfo[0].invoice_number
+            : 'no data'
+          order.order_status = invoiceInfo[0]
+            ? invoiceInfo[0].order_status
+            : 'no data'
         }
         return helper.response(
           res,
@@ -30,6 +34,7 @@ module.exports = {
         return helper.response(res, 404, `User_id: ${id} Not Found`, null)
       }
     } catch (error) {
+      console.log(error)
       return helper.response(res, 400, 'Bad Request', error)
     }
   },

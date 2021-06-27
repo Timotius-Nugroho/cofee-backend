@@ -36,12 +36,15 @@ module.exports = {
       }
 
       // midtrans
-      const newResult = await invoiceModel.createMidtransTrans({
-        invoiceId: result.insertId,
-        subTotal: invoiceSubtotal
-      })
-
-      return helper.response(res, 200, 'Succes Create Invoice', newResult)
+      if (paymentMethod === 'Midtrans') {
+        const newResult = await invoiceModel.createMidtransTrans({
+          invoiceId: result.insertId,
+          subTotal: invoiceSubtotal
+        })
+        return helper.response(res, 200, 'Succes Create Invoice', newResult)
+      } else {
+        return helper.response(res, 200, 'Succes Create Invoice', result)
+      }
     } catch (error) {
       console.log(error)
       return helper.response(res, 400, 'Bad Request', error)
