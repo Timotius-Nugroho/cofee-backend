@@ -25,7 +25,7 @@ When there is a pandemic, this application is here to make it easier for you to 
 5. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
 6. Open Postman desktop application or Chrome web app extension that has installed before
 7. Choose HTTP Method and enter request url.(ex. localhost:3000/)
-8. You can see all the end point [here](https://documenter.getpostman.com/view/9852901/TzJoEfvL)
+8. You can see all the end point [here](https://documenter.getpostman.com/view/14948086/TzeWHocc)
 
 ## Set up .env file
 
