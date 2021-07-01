@@ -31,10 +31,10 @@ module.exports = {
       )
     })
   },
-  getDataCount: () => {
+  getDataCount: (search, category) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT COUNT(*) AS total FROM product',
+        `SELECT COUNT(*) AS total FROM product WHERE product_name LIKE '%${search}%' AND product_category = "${category}"`,
         (error, result) => {
           !error ? resolve(result[0].total) : reject(new Error(error))
         }

@@ -46,7 +46,7 @@ module.exports = {
       if (category === undefined) {
         category = 'fav'
       }
-      const totalData = await productModel.getDataCount()
+      const totalData = await productModel.getDataCount(search, category)
       page = parseInt(page)
       limit = parseInt(limit)
       const totalPage = Math.ceil(totalData / limit)
@@ -77,6 +77,7 @@ module.exports = {
         return helper.response(res, 404, 'Data Not Found', null)
       }
     } catch (error) {
+      // console.log(error)
       return helper.response(res, 400, 'Bad Request', error)
     }
   },
