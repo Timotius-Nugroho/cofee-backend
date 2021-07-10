@@ -28,7 +28,7 @@ module.exports = {
         const result = await authModel.register(setData)
         delete result.user_password
 
-        const url = `http://localhost:3005/backend5/api/v1/auth/change-data/${result.id}`
+        const url = `https://coffee-exprees.herokuapp.com/backend5/api/v1/auth/change-data/${result.id}`
         sendMail('Please activate your account', url, userEmail)
 
         return helper.response(
@@ -150,7 +150,7 @@ module.exports = {
           expiresIn: '1h'
         })
 
-        const url = `http://localhost:3005/backend5/api/v1/auth/change-data/${token}`
+        const url = `https://coffee-exprees.herokuapp.com/backend5/api/v1/auth/change-data/${token}`
 
         // send email for verificatioan here
         sendMail('Confirm your change password', url, req.body.userEmail)
